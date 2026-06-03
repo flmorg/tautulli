@@ -27,13 +27,22 @@ deployment:
           cpu: 1000m
           memory: 512Mi
       volumeMounts:
-        - name: storage
+        - name: config
           mountPath: /config
-          subPath: tautulli/config
+        - name: cache
+          mountPath: /config/cache
+        - name: logs
+          mountPath: /config/logs
   volumes:
-    - name: storage
+    - name: config
       type: pvc
-      typeName: storage-pvc
+      typeName: config-pvc
+    - name: cache
+      type: pvc
+      typeName: cache-pvc
+    - name: logs
+      type: pvc
+      typeName: logs-pvc
 
 ingresses:
   - name: ingress
@@ -48,6 +57,22 @@ ingresses:
             servicePort: http
 
 pvcs:
+  - name: config-pvc
+    storageClassName: longhorn
+    role: config
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
+  - name: cache-pvc
+    storageClassName: longhorn
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
+  - name: logs-pvc
+    storageClassName: longhorn
+    accessModes:
+      - ReadWriteOnce
+    size: 1Gi
   - name: storage-pvc
     storageClassName: local-path-persistent
     accessModes:
