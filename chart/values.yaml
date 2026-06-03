@@ -25,7 +25,7 @@ deployment:
           memory: 0Mi
         limits:
           cpu: 1000m
-          memory: 512Mi
+          memory: 1Gi
       volumeMounts:
         - name: config
           mountPath: /config
